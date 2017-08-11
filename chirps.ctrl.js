@@ -55,6 +55,29 @@ router.route('/one/:id')
                 res.sendStatus(500);
             });
     });
+    router.route('/user/:user')
+    .get(function(req, res){
+        fs.readFile(jsonPath, 'utf-8', function(err, fileContents) {
+            if (err) {
+                res.statusStatus(500);
+            } else {
+                var chirps = JSON.parse(fileContents);
+                var user = req.params.user;
+                var response = chirps.filter(function(chirp) {
+                    if(chirp.user){
+                        if (chirp.user.toLowerCase().trim() === user.toLowerCase().trim()) {
+                            return chirp;
+                        }
+                    }
+                });
+                if (response) {
+                    res.send(response);
+                } else {
+                    res.sendStatus(404);
+                }
+            }
+        });
+    });
 
 
     module.exports = router;
